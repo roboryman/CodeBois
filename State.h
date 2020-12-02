@@ -14,23 +14,32 @@ private:
     std::vector<County> counties;
     int caseCount;
     int deaths;
+    std::string fips;
 public:
     State(){
         name = "";
         caseCount = 0;
         deaths = 0;
     }
-    State(std::string name){
-        this->name= name;
-        caseCount = 0;
-        deaths = 0;
+    State(std::string name, int cases, int deaths_, std::string fips){
+        this->name = name;
+        caseCount = cases;
+        deaths = deaths_;
+        fips = fips;
     }
+
+    int getCaseCount() const {
+        return caseCount;
+    }
+
+    int getDeaths() const {
+        return deaths;
+    }
+
     std::string getName(){
         return name;
     }
     void addCounty(County newCounty){
-        deaths += newCounty.getDeaths();
-        caseCount += newCounty.getCaseCount();
         counties.push_back(newCounty);
     }
     std::vector<County> getCounties(){

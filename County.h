@@ -12,16 +12,18 @@ private:
     std::string name;
     int caseCount;
     int deaths;
+    std::string fips;
 public:
     County(){
         this->name = "";
         this->caseCount = 0;
         this->deaths = 0;
     }
-    County(std::string name){
+    County(std::string name, int caseCount, int deaths, std::string fips){
         this->name = name;
-        this->caseCount = 0;
-        this->deaths = 0;
+        this->caseCount = caseCount;
+        this->deaths = deaths;
+        fips = fips;
     }
     int getDeaths(){
         return deaths;

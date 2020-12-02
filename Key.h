@@ -13,6 +13,7 @@ class Key{
 private:
     int date;
     std::vector<State> States;
+
 public:
     Key* left;
     Key* right;
@@ -28,6 +29,18 @@ public:
     }
     int getDate(){
         return date;
+    }
+    std::vector<State> &getStates() {
+        return States;
+    }
+
+    int StateIndex(std::string stateName)
+    {
+        for (int i = 0; i < States.size() ; ++i) {
+            if(States.at(i).getName() == stateName)
+                return i;
+        }
+        return -1;
     }
 };
 
