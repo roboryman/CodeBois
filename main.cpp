@@ -64,7 +64,7 @@ int main() {
 
 
     BplusTree* treetest = new BplusTree();
-    for(int i = 10; i < 50;i++){
+    for(int i = 10; i < 100;i++){
       treetest->insertKey(treetest->makeKey(std::to_string(i)));
     }
     treetest->Transverse();
@@ -77,6 +77,22 @@ int main() {
         std::cout << "Found" << std::endl;
         std::cout << testKey->getDate() << std::endl;
     }
+
+
+
+
+    //Need to test below with dataset
+    /*
+    BplusTree BplusTree;
+    HashTable HashTable;
+    KeyList KeyList;
+    KeyList.LoadStateData("Dataset/us-states.csv");
+    KeyList.LoadCountyData("Dataset/us-counties.csv");
+    BplusTree.insertData(KeyList.getData());
+    HashTable.insertData(KeyList.getData());
+
+
+    */
 
 //Loading Data stuff
 

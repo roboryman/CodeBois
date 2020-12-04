@@ -243,7 +243,7 @@ public:
         return root;
     }
 
-    void insertData(const std::vector<Key*>& keys){
+    void insertData(std::vector<Key*>& keys){
         for(int i = 0;i < keys.size(); i++){
             insertKey(keys.at(i));
         }

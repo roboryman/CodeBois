@@ -40,20 +40,21 @@ public:
         return -1;
     }
 
-    State findState(std::string stateName){
+    int findState(std::string stateName){
         for(int i = preStateIndex; i < states.size(); i++){
             if(states.at(i).getName() == stateName){
                 preStateIndex = i;
-                return states.at(i);
+                return i;
             }
         }
 
         for(int i = 0; i < preStateIndex;i++){
             if(states.at(i).getName() == stateName){
                 preStateIndex = i;
-                return states.at(i);
+                return i;
             }
         }
+        return -1;
     }
 
 };

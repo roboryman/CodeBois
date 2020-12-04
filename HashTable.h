@@ -4,20 +4,21 @@
 #include "Key.h"
 #include <iomanip>
 #include <iostream>
+#include <unordered_map>
 #include <fstream>
 #include <sstream>
 using namespace std;
 
 class HashTable{
 private:
-    std::unordered_map<int,Key*> hashTable;
+    std::unordered_map<std::string,Key*> hashTable;
 
 public:
     void insertKey(Key* newKey){
         hashTable[newKey->getDate()] = newKey;
     }
 
-    Key* findKey(int date){
+    Key* findKey(std::string date){
         if(hashTable.find(date) == hashTable.end()){
             return nullptr;
         }
@@ -37,7 +38,7 @@ public:
         }
     }
 
-    void PrintDate(int date)
+    void PrintDate(std::string date)
     {
         cout << date << ":" << endl;
 
@@ -50,8 +51,13 @@ public:
             }
         }
     }
+    void insertData(std::vector<Key*>& keys){
+      for(int i = 0; i < keys.size();i++){
+        hashTable[keys.at(i)->getDate()] = newKey;
+      }
+    }
 
-    void LoadStateData(const std::string& filepath) {
+    /*void LoadStateData(const std::string& filepath) {
         //opens the filepath into file
         ifstream file(filepath);
         if (file.is_open()) {
@@ -161,7 +167,7 @@ public:
             }
         }
         file.close();
-    }
+    }*/
 
 };
 

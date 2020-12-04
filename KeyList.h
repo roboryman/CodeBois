@@ -12,7 +12,9 @@ class KeyList{
   unordered_set<string> dates;
   vector<Key*> keys;
 
-
+  vector<Key*> getData(){
+    return keys;
+  }
   KeyList(){
     previousI = 0;
   }
@@ -120,7 +122,7 @@ class KeyList{
 
           //all dates should exist bc state data is already loaded
 
-          if(findKey(date) != nullptr && findKey(date).findState(state) != nullptr){
+          if(findKey(date) != nullptr && findKey(date).findState(state) != -1){
             findKey(date)->findState(state).addCounty(County(county, caseCount, deaths,  fips));
           }else{ 
             std::cout << "key with date not found or state not found in key" << std::end;
