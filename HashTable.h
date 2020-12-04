@@ -4,7 +4,6 @@
 #include "Key.h"
 #include <iomanip>
 #include <iostream>
-#include <vector>
 #include <fstream>
 #include <sstream>
 using namespace std;
@@ -88,7 +87,7 @@ public:
                 int date = stoi(year);
 
 
-                /*=====insert all the data into its key in the hashtable=====*/
+                //=====insert all the data into its key in the hashtable=====
 
                 //check if key exists
                 if(findKey(date) != nullptr && state != "Puerto Rico")   //if it does exist, add state to key in hashmap
@@ -147,7 +146,7 @@ public:
                     int date = stoi(year);
 
 
-                    /*=====insert all the data into its key in the hashtable=====*/
+                    //=====insert all the data into its key in the hashtable=====
 
                     //all dates should exist bc state data is already loaded
 
@@ -165,6 +164,5 @@ public:
     }
 
 };
-
 
 #endif //COVIDVISUALIZATION_HASHTABLE_H

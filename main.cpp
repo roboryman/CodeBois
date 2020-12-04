@@ -62,27 +62,31 @@ int main() {
 
 
 
-/*
+
     BplusTree* treetest = new BplusTree();
-    for(int i = 0; i < 20;i++){
-        treetest->insertKey(treetest->makeKey(i));
+    for(int i = 10; i < 50;i++){
+      treetest->insertKey(treetest->makeKey(std::to_string(i)));
     }
     treetest->Transverse();
     treetest->LevelOrderTranserse();
-    Key* testKey = treetest->findKey(4);
+    Key* testKey = treetest->findKey("4");
     if(testKey == nullptr){
         std::cout << "Not Found" << std::endl;
     }
     else{
         std::cout << "Found" << std::endl;
         std::cout << testKey->getDate() << std::endl;
-    }*/
+    }
 
 //Loading Data stuff
+
+
+/*
 HashTable test;
 test.LoadStateData("Dataset/us-states.csv");
 test.LoadCountyData("Dataset/us-counties.csv");
 test.PrintDate(20201127);
+*/
 
 
 return 0;

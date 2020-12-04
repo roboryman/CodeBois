@@ -1,11 +1,7 @@
 #ifndef COVIDVISUALIZATION_COUNTY_H
 #define COVIDVISUALIZATION_COUNTY_H
 
-#include <iostream>
 #include <string>
-#include <vector>
-#include <unordered_map>
-#include <queue>
 
 class County{
 private:

@@ -2,11 +2,7 @@
 #define COVIDVISUALIZATION_STATE_H
 
 #include "County.h"
-#include <iostream>
-#include <string>
 #include <vector>
-#include <unordered_map>
-#include <queue>
 
 class State{
 private:
@@ -21,13 +17,14 @@ public:
         caseCount = 0;
         deaths = 0;
     }
+    
     State(std::string name, int cases, int deaths_, std::string fips){
         this->name = name;
         caseCount = cases;
         deaths = deaths_;
         fips = fips;
     }
-
+    
     int getCaseCount() const {
         return caseCount;
     }
@@ -39,9 +36,11 @@ public:
     std::string getName(){
         return name;
     }
+
     void addCounty(County newCounty){
         counties.push_back(newCounty);
     }
+
     std::vector<County> getCounties(){
         return counties;
     }

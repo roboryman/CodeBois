@@ -2,6 +2,10 @@
 #define COVIDVISUALIZATION_BPLUSTREE_H
 
 #include "Key.h"
+#include <chrono>
+#include <thread>
+#include <iostream>
+#include <queue>
 
 
 class BplusTree{
@@ -17,11 +21,14 @@ private:
         TreeNode* left;
         TreeNode* middle;
         TreeNode* right;
+
         TreeNode(){
             leaf = true;
         }
+
         TreeNode(bool isleaf){
             leaf = isleaf;
+            //leaf nodes don't need pointers
             if(!leaf){
                 left = nullptr;
                 right = nullptr;
@@ -59,7 +66,7 @@ private:
         }
 
         void insertKey(Key* newKey){
-            //insert a key into the leaft linked list
+            //insert a key into the leaf linked list
             //Change pointers and positions
             if(keys.size() == 0){
                 keys.push_back(newKey);
@@ -84,9 +91,11 @@ private:
             }
             //swapping left and right pointers appropraitely
             newKey->left = keys[keys.size()-1];
-            newKey->right = keys[keys.size()-1]->right;
-            if(keys[keys.size()-1]->right != nullptr){
+            if(newKey->right == nullptr){
+              newKey->right = keys[keys.size()-1]->right;
+              if(keys[keys.size()-1]->right != nullptr){
                 keys[keys.size()-1]->right->left = newKey;
+              }
             }
             keys[keys.size()-1]->right = newKey;
             //add key into Treenode
@@ -101,7 +110,7 @@ public:
         root = nullptr;
     }
 
-    Key* makeKey(int date){
+    Key* makeKey(std::string date){
         Key* newKey = new Key(date);
         return newKey;
     }
@@ -120,7 +129,7 @@ public:
                 newRoot->addKey(tempNode->keys[0]);
                 newRoot->left = root;
                 newRoot->middle = tempNode;
-                this->root = newRoot;
+                root = newRoot;
                 tempNode->removeFirst();
             }
         }
@@ -143,10 +152,10 @@ public:
                         root->middle = newLeft;
                         //Changing keys
                         newTreeNode->addKey(root->keys[0]);
-                        newTreeNode->addKey(root->keys[1]);
-                        root->keys.pop_back();
                         root->keys[0] = newLeft->keys[0];
                         newLeft->removeFirst();
+                        newTreeNode->addKey(root->keys[1]);
+                        root->keys.pop_back();
                         return newTreeNode;
                     }
                     else{
@@ -154,9 +163,10 @@ public:
                         root->addKey(newLeft->keys[0]);
 
                         root->right = root->middle;
-                        root->middle = newLeft;
+                        root->middle = root->left;
+                        root->left = newLeft;
+                        newLeft->removeFirst();
                     }
-                    newLeft->removeFirst();
                 }
 
             }
@@ -206,8 +216,8 @@ public:
                             //no split needed right pointer add to it
                             root->addKey(newMiddle->keys[0]);
                             root->right = newMiddle;
+                            newMiddle->removeFirst();
                         }
-                        newMiddle->removeFirst();
                     }
                 }
             }
@@ -233,6 +243,11 @@ public:
         return root;
     }
 
+    void insertData(const std::vector<Key*>& keys){
+        for(int i = 0;i < keys.size(); i++){
+            insertKey(keys.at(i));
+        }
+    }
 
     void LevelOrderTranserse(){
         std::queue<TreeNode*> queue;
@@ -252,12 +267,29 @@ public:
                     for(int i = 0;i < recent->getKeysSize();i++){
                         std::cout << recent->keys[i]->getDate() << " ";
                     }
+                    
+                    std::cout << recent << " ";
+                    if(recent->left != nullptr) {
+                        std::cout << recent->left << " ";
+                    }
+                    if(recent->middle != nullptr) {
+                        std::cout << recent->middle << " ";
+                    }
+                    if(recent->right != nullptr) {
+                        std::cout << recent->right << " ";
+                    }
                     std::cout << std::endl;
                 }
                 else{
                     std::cout << "nonLeaf with keys: ";
                     for(int i = 0;i < recent->getKeysSize();i++){
                         std::cout << recent->keys[i]->getDate() << " ";
+                    }
+                    std::cout << recent << " ";
+                    std::cout << recent->left << " ";
+                    std::cout << recent->middle << " ";
+                    if(recent->right != nullptr) {
+                        std::cout << recent->right << " ";
                     }
                     std::cout << std::endl;
                     queue.push(recent->left);
@@ -277,12 +309,13 @@ public:
         }
         Key* allKeys = toLeafNode->keys[0];
         while(allKeys != nullptr){
-            std::cout << allKeys->getDate() << std::endl;
-            allKeys = allKeys->right;
+          //std::this_thread::sleep_for(std::chrono::seconds(1));
+          std::cout << allKeys->getDate() << std::endl;
+          allKeys = allKeys->right;
         }
     }
 
-    Key* findKey(int date){
+    Key* findKey(std::string date){
         if(root == nullptr){
             return nullptr;
         }
@@ -293,9 +326,12 @@ public:
             }
             else{
                 if(findLeafNode->getKeysSize() == 2){
-                    if(date >= findLeafNode->keys[1]->getDate()){
-                        findLeafNode = findLeafNode->right;
-                    }
+                  if(date >= findLeafNode->keys[1]->getDate()){
+                      findLeafNode = findLeafNode->right;
+                  }
+                  else{
+                    findLeafNode = findLeafNode->middle;
+                  }
                 }
                 else{
                     findLeafNode = findLeafNode->middle;
@@ -303,7 +339,7 @@ public:
             }
         }
         Key* findKey = findLeafNode->keys[0];
-        while(date >= findKey->getDate() && findKey != nullptr){
+        while(findKey != nullptr && date >= findKey->getDate()){
             if(date == findKey->getDate()){
                 return findKey;
             }
