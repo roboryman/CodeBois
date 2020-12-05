@@ -56,13 +56,15 @@ int main() {
 
     //Need to test below with dataset
     
-    BplusTree* BplusTree = new class BplusTree();
-    HashTable* HashTable = new class HashTable();
+    BplusTree* kek2 = new BplusTree();
     KeyList* kekw = new KeyList();
-    kekw->LoadStateData("Dataset/us-states.csv");
-    kekw->LoadCountyData("Dataset/us-counties.csv");
-    BplusTree->insertData(kekw->getData());
-    HashTable->insertData(kekw->getData());
+    HashTable* kek3 = new HashTable();
+    kekw->LoadStateData("us-states.csv");
+    kekw->LoadCountyData("us-counties.csv");
+    kek2->insertData(kekw->getData());
+    kek2->LevelOrderTranserse();
+    kek3->insertData(kekw->getData());
+    kek3->PrintTable();
 
 
     

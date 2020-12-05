@@ -14,16 +14,15 @@ private:
     std::unordered_map<std::string,Key*> hashTable;
 
 public:
-
     HashTable(){
-      
+
     }
 
     void insertKey(Key* newKey){
         hashTable[newKey->getDate()] = newKey;
     }
 
-    Key* findKey(std::string date){
+    Key* findKey(const std::string& date){
         if(hashTable.find(date) == hashTable.end()){
             return nullptr;
         }
@@ -36,9 +35,9 @@ public:
     {
         for (auto iter = hashTable.begin() ; iter != hashTable.end() ; ++iter) {
             cout << "Date: " << iter->first << endl;
-            for (int i = 0; i <iter->second->getStates().size() ; ++i) {
-                cout << "State: " << iter->second->getStates().at(i).getName() << " Cases: " << iter->second->getStates().at(i).getCaseCount();
-                cout << " Deaths: " << iter->second->getStates().at(i).getDeaths() << endl;
+            for (int i = 0; i <iter->second->getStates()->size() ; ++i) {
+                cout << "State: " << iter->second->getStates()->at(i)->getName() << " Cases: " << iter->second->getStates()->at(i)->getCaseCount();
+                cout << " Deaths: " << iter->second->getStates()->at(i)->getDeaths() << endl;
             }
         }
     }
@@ -47,20 +46,20 @@ public:
     {
         cout << date << ":" << endl;
 
-        for (int i = 0; i < hashTable[date]->getStates().size() ; ++i) {
-            cout << setw(20) << "State: " << endl << setw(25) << hashTable[date]->getStates().at(i).getName()<< endl;
+        for (int i = 0; i < hashTable[date]->getStates()->size() ; ++i) {
+            cout << setw(20) << "State: " << endl << setw(25) << hashTable[date]->getStates()->at(i)->getName()<< endl;
 
-            for (int j = 0; j < hashTable[date]->getStates().at(i).getCounties().size() ; ++j) {
-                cout << setw(30) << "County: " << hashTable[date]->getStates().at(i).getCounties().at(j).getName() << " Cases: " <<
-                hashTable[date]->getStates().at(i).getCounties().at(j).getCaseCount() << " Deaths: " << hashTable[date]->getStates().at(i).getCounties().at(j).getDeaths()<< endl;
+            for (int j = 0; j < hashTable[date]->getStates()->at(i)->getCounties()->size() ; ++j) {
+                cout << setw(30) << "County: " << hashTable[date]->getStates()->at(i)->getCounties()->at(j)->getName() << " Cases: " <<
+                     hashTable[date]->getStates()->at(i)->getCounties()->at(j)->getCaseCount() << " Deaths: " << hashTable[date]->getStates()->at(i)->getCounties()->at(j)->getDeaths()<< endl;
             }
         }
     }
     //add data from datasets
-    void insertData(std::vector<Key*> keys){
-      for(int i = 0; i < keys.size();i++){
-        hashTable[keys.at(i)->getDate()] = keys.at(i);
-      }
+    void insertData(std::vector<Key*>* keys){
+        for(int i = 0; i < keys->size();i++){
+            hashTable[keys->at(i)->getDate()] = keys->at(i);
+        }
     }
 
     /*void LoadStateData(const std::string& filepath) {

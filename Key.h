@@ -1,12 +1,14 @@
 #ifndef COVIDVISUALIZATION_KEY_H
 #define COVIDVISUALIZATION_KEY_H
 
+#include <utility>
+
 #include "State.h"
 
 class Key{
 private:
     std::string date;
-    std::vector<State> states;
+    std::vector<State*>* states;
     int preStateIndex;
 
 public:
@@ -14,13 +16,17 @@ public:
     Key* right;
 
     Key(){
-        std::string date = "";
+        states = new std::vector<State*>;
+        date = "";
+        preStateIndex = 0;
         left = nullptr;
         right = nullptr;
     }
 
     Key(std::string date){
-        this->date = date;
+        states = new std::vector<State*>;
+        this->date = std::move(date);
+        preStateIndex = 0;
         left = nullptr;
         right = nullptr;
     }
@@ -29,27 +35,27 @@ public:
         return date;
     }
 
-    std::vector<State> &getStates() {
+    std::vector<State*>* getStates() {
         return states;
     }
 
-    int StateIndex(std::string stateName){
-        for (int i = 0; i < states.size() ; ++i) {
-            if(states.at(i).getName() == stateName){return i;}
+    int StateIndex(const std::string& stateName){
+        for (int i = 0; i < states->size() ; ++i) {
+            if(states->at(i)->getName() == stateName){return i;}
         }
         return -1;
     }
 
-    int findState(std::string stateName){
-        for(int i = preStateIndex; i < states.size(); i++){
-            if(states.at(i).getName() == stateName){
+    int findState(const std::string& stateName){
+        for(int i = preStateIndex; i < states->size(); i++){
+            if(states->at(i)->getName() == stateName){
                 preStateIndex = i;
                 return i;
             }
         }
 
         for(int i = 0; i < preStateIndex;i++){
-            if(states.at(i).getName() == stateName){
+            if(states->at(i)->getName() == stateName){
                 preStateIndex = i;
                 return i;
             }

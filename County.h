@@ -2,6 +2,7 @@
 #define COVIDVISUALIZATION_COUNTY_H
 
 #include <string>
+#include <utility>
 
 class County{
 private:
@@ -16,15 +17,15 @@ public:
         this->deaths = 0;
     }
     County(std::string name, int caseCount, int deaths, std::string fips){
-        this->name = name;
+        this->name = std::move(name);
         this->caseCount = caseCount;
         this->deaths = deaths;
-        fips = fips;
+        this->fips = std::move(fips);
     }
-    int getDeaths(){
+    int getDeaths() const{
         return deaths;
     }
-    int getCaseCount(){
+    int getCaseCount() const{
         return caseCount;
     }
     std::string getName(){

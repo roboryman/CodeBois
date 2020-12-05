@@ -8,6 +8,7 @@
 #include <queue>
 
 
+
 class BplusTree{
     //3 children
     //2 keys for non leaf nodes
@@ -55,10 +56,10 @@ private:
         void addKey(Key* newKey){
             //inserting key into treenode not linked list
             //Change positions only
-            for(int i = 0; i < keys.size();i++){
-                if(newKey->getDate() < keys[i]->getDate()){
-                    Key* tempKey = keys[i];
-                    keys[i] = newKey;
+            for(auto & key : keys){
+                if(newKey->getDate() < key->getDate()){
+                    Key* tempKey = key;
+                    key = newKey;
                     newKey = tempKey;
                 }
             }
@@ -75,7 +76,7 @@ private:
             Key* tempKey;
             for(int i = 0; i < keys.size();i++){
                 if(newKey->getDate() < keys[i]->getDate()){
-                    //swapping left and right pointers appropraitely
+                    //swapping left and right pointers appropriately
                     newKey->right = keys[i];
                     newKey->left = keys[i]->left;
                     if(keys[i]->left !=nullptr){
@@ -83,13 +84,13 @@ private:
                     }
                     keys[i]->left = newKey;
 
-                    //swapping keys in vector appropraitely
+                    //swapping keys in vector appropriately
                     tempKey = keys[i];
                     keys[i] = newKey;
                     newKey = tempKey;
                 }
             }
-            //swapping left and right pointers appropraitely
+            //swapping left and right pointers appropriately
             newKey->left = keys[keys.size()-1];
             if(newKey->right == nullptr){
                 newKey->right = keys[keys.size()-1]->right;
@@ -124,8 +125,8 @@ public:
         else{
             TreeNode * tempNode = Insert(root,newKey);
             if(tempNode !=root){
-                //split occured
-                TreeNode* newRoot = new TreeNode(false);
+                //split occurred
+                auto* newRoot = new TreeNode(false);
                 newRoot->addKey(tempNode->keys[0]);
                 newRoot->left = root;
                 newRoot->middle = tempNode;
@@ -141,10 +142,10 @@ public:
                 //left pointer
                 TreeNode* newLeft = Insert(root->left,newKey);
                 if(newLeft != root->left){
-                    //split occured
+                    //split occurred
                     if(root->getKeysSize() == 2){
                         //Too many pointers New TreeNode needed
-                        TreeNode* newTreeNode = new TreeNode(false);
+                        auto* newTreeNode = new TreeNode(false);
                         //Changing pointers to TreeNodes
                         newTreeNode->left = root->middle;
                         newTreeNode->middle = root->right;
@@ -177,9 +178,9 @@ public:
                         //pointer already full need new TreeNode
                         TreeNode* newRight = Insert(root->right,newKey);
                         if(newRight != root->right){
-                            //split occured
+                            //split occurred
                             //Too many pointers New TreeNode needed
-                            TreeNode* newTreeNode = new TreeNode(false);
+                            auto* newTreeNode = new TreeNode(false);
                             //Changing pointers to TreeNodes
                             newTreeNode->left = root->right;
                             newTreeNode->middle = newRight;
@@ -197,10 +198,10 @@ public:
                     //middle pointer
                     TreeNode* newMiddle = Insert(root->middle,newKey);
                     if(newMiddle != root->middle){
-                        //split occured
+                        //split occurred
                         if(root->getKeysSize() == 2){
                             //Too many pointers New TreeNode needed
-                            TreeNode* newTreeNode = new TreeNode(false);
+                            auto* newTreeNode = new TreeNode(false);
                             //Changing pointers to TreeNodes
                             newTreeNode->left = newMiddle;
                             newTreeNode->middle = root->right;
@@ -243,9 +244,9 @@ public:
         return root;
     }
 
-    void insertData(std::vector<Key*> keys){
-        for(int i = 0;i < keys.size(); i++){
-            insertKey(keys.at(i));
+    void insertData(std::vector<Key*>* keys){
+        for(auto & key : *keys){
+            insertKey(key);
         }
     }
 
