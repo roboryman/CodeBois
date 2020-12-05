@@ -14,6 +14,11 @@ private:
     std::unordered_map<std::string,Key*> hashTable;
 
 public:
+
+    HashTable(){
+      
+    }
+
     void insertKey(Key* newKey){
         hashTable[newKey->getDate()] = newKey;
     }
@@ -51,9 +56,10 @@ public:
             }
         }
     }
-    void insertData(std::vector<Key*>& keys){
+    //add data from datasets
+    void insertData(std::vector<Key*> keys){
       for(int i = 0; i < keys.size();i++){
-        hashTable[keys.at(i)->getDate()] = newKey;
+        hashTable[keys.at(i)->getDate()] = keys.at(i);
       }
     }
 

@@ -3,6 +3,8 @@
 #include "HashTable.h"
 #include "State.h"
 #include "Key.h"
+#include "KeyList.h"
+//#include "GUI.h"
 
 
 /*
@@ -18,58 +20,60 @@ Contributers
 
 
 int main() {
-    /*
-    sf::RenderWindow window(sf::VideoMode(1200, 900), "COVID-19 Visualization");
-    window.setVerticalSyncEnabled(true);
+  /*
+  sf::RenderWindow rw( sf::VideoMode(1200, 900), "COVID-19 Transmission Map", sf::Style::Titlebar | sf::Style::Close);
+  rw.setFramerateLimit(60);
 
-      // game;
-      //game.RedrawSprites(window);
+  GUI gui;
+  gui.Redraw(rw, sf::Vector2f(0,0));
 
-      while (window.isOpen())
+  // BEGIN MAIN UPDATE LOOP 
+	while(rw.isOpen()) {
+		sf::Event event;
+    auto mouse = sf::Mouse::getPosition(rw);
+    auto realPos = rw.mapPixelToCoords(mouse);
+		while(rw.pollEvent(event))
+    {
+      gui.HandleEvent(event);
+
+			if(event.type == sf::Event::Closed)
       {
-          sf::Event event;
-          while(window.pollEvent(event))
-          {
-              if(event.type == sf::Event::Closed)
-              {
-                  window.close();
-              }
-              else if(event.type == sf::Event::MouseButtonPressed)
-              {
-                  if(event.mouseButton.button == sf::Mouse::Left)
-                  {
-                      auto mouse = sf::Mouse::getPosition(window);
-                      auto real_pos = window.mapPixelToCoords(mouse);
-                      //game.LeftMouseButton(real_pos);
-                  }
-                  else if(event.mouseButton.button == sf::Mouse::Right)
-                  {
-                      auto mouse = sf::Mouse::getPosition(window);
-                      auto real_pos = window.mapPixelToCoords(mouse);
-                      //game.RightMouseButton(real_pos);
-                  }
-              }
-          }
-          //game.RedrawSprites(window);
-      }
+				rw.close();
+			}
+		}
+       gui.Redraw(rw, realPos);
+	}
 
-      //game.Cleanup();
-      return 0;
-
-
-    */
+  gui.Cleanup(); */
 
 
 
 
 
-    BplusTree* treetest = new BplusTree();
+
+
+
+
+    //Need to test below with dataset
+    
+    BplusTree* BplusTree = new class BplusTree();
+    HashTable* HashTable = new class HashTable();
+    KeyList* kekw = new KeyList();
+    kekw->LoadStateData("Dataset/us-states.csv");
+    kekw->LoadCountyData("Dataset/us-counties.csv");
+    BplusTree->insertData(kekw->getData());
+    HashTable->insertData(kekw->getData());
+
+
+    
+   /*
+   BplusTree* treetest = new BplusTree();
     for(int i = 10; i < 100;i++){
       treetest->insertKey(treetest->makeKey(std::to_string(i)));
     }
     treetest->Transverse();
     treetest->LevelOrderTranserse();
-    Key* testKey = treetest->findKey("4");
+    Key* testKey = treetest->findKey("-1");
     if(testKey == nullptr){
         std::cout << "Not Found" << std::endl;
     }
@@ -77,32 +81,7 @@ int main() {
         std::cout << "Found" << std::endl;
         std::cout << testKey->getDate() << std::endl;
     }
-
-
-
-
-    //Need to test below with dataset
-    /*
-    BplusTree BplusTree;
-    HashTable HashTable;
-    KeyList KeyList;
-    KeyList.LoadStateData("Dataset/us-states.csv");
-    KeyList.LoadCountyData("Dataset/us-counties.csv");
-    BplusTree.insertData(KeyList.getData());
-    HashTable.insertData(KeyList.getData());
-
-
     */
-
-//Loading Data stuff
-
-
-/*
-HashTable test;
-test.LoadStateData("Dataset/us-states.csv");
-test.LoadCountyData("Dataset/us-counties.csv");
-test.PrintDate(20201127);
-*/
 
 
 return 0;

@@ -5,135 +5,136 @@
 #include <unordered_set>
 
 class KeyList{
-  private:
-  int preKeyIndex;
+private:
+    int preKeyIndex;
 
-  public:
-  unordered_set<string> dates;
-  vector<Key*> keys;
+public:
+    unordered_set<string> dates;
+    vector<Key*> keys;
 
-  vector<Key*> getData(){
-    return keys;
-  }
-  KeyList(){
-    previousI = 0;
-  }
-
-  Key* findKey(string date){
-    if(dates[date] == dates::end){
-      return nullptr
+    vector<Key*> getData(){
+        return keys;
     }
-    else{
-      for(int i = preKeyIndex; i < keys.size(); i++){
-        if(keys.at(i).getDate()) == date){
-          preKeyIndex = i;
-          return keys.at(i);
-        }
-      }
-      for(int i = 0; i < preKeyIndex;i++){
-        if(keys.at(i).getDate()) == date){
-          preKeyIndex = i;
-          return keys.at(i);
-        }
-      }
+
+    KeyList(){
+        preKeyIndex = 0;
     }
-  }
 
-  void LoadStateData(const std::string& filepath) {
-    //opens the filepath into file
-    ifstream file(filepath);
-
-    if (file.is_open()) {
-    //Get line from file and discard
-    string lineFromFile;
-    getline(file, lineFromFile);
-
-      while (!file.eof()) {
-
-        //get line from file
-        getline(file, lineFromFile);
-
-        //take line and put into stream
-        istringstream stream(lineFromFile);
-
-        //use getline and delimiters to get each element
-        string date, state, fips, s_cases, s_deaths;
-
-        getline(stream, date, ',');
-        getline(stream, state, ',');
-        getline(stream, fips, ',');
-        getline(stream, s_cases, ',');
-        getline(stream, s_deaths, ',');
-
-        //convert to necessary data type
-        int deaths = stoi(s_deaths);
-        int caseCount = stoi(s_cases);
-
-        /*=====insert all the data into its key in the list=====*/
-
-        //check if key exists
-        if(findKey(date) != nullptr && state != "Puerto Rico"){
-          //if it does exist, add state to key in list
-          findKey(date)->getStates().emplace_back(state,caseCount,deaths,fips);
+    Key* findKey(string date){
+        if(dates.find(date) == dates.end()){
+            return nullptr;
         }
-        else{   // if it doesnt, create key and add state and insert into list
-          if(state != "Puerto Rico") {
-            keys.emplace_back(new Key(date));
-            dates.insert(date);
-            findKey(date)->getStates().emplace_back(state, caseCount, deaths,fips);
-          }
+        else{
+            for(int i = preKeyIndex; i < keys.size(); i++){
+                if(keys.at(i)->getDate() == date){
+                    preKeyIndex = i;
+                    return keys.at(i);
+                }
+            }
+            for(int i = 0; i < preKeyIndex;i++){
+                if(keys.at(i)->getDate() == date){
+                    preKeyIndex = i;
+                    return keys.at(i);
+                }
+            }
         }
-      }
     }
-    file.close();
-  }
 
-  void LoadCountyData(const std::string& filepath) {  
-   //opens the filepath into file
-    ifstream file(filepath);
-    if (file.is_open()) {
-      //Get line from file and discard
-      string lineFromFile;
-      getline(file, lineFromFile);
-    
-      while (!file.eof()) {
-        //get line from file
-        getline(file, lineFromFile);
+    void LoadStateData(const std::string& filepath) {
+        //opens the filepath into file
+        ifstream file(filepath);
 
-        //take line and put into stream
-        istringstream stream(lineFromFile);
-        //use getline and delimiters to get each element
-        string date, county, state, fips, s_cases, s_deaths;
-        getline(stream, date, ',');
-        getline(stream, county, ',');
-        getline(stream, state, ',');
-        getline(stream, fips, ',');
-        getline(stream, s_cases, ',');
-        getline(stream, s_deaths, ',');
-        if (state != "Puerto Rico") {
-          //cout << month << "-" << day << ": " <<county << ", " << state << ", " << fips <<  ", " << s_cases << ", " << s_deaths << ", " << endl;
+        if (file.is_open()) {
+            //Get line from file and discard
+            string lineFromFile;
+            getline(file, lineFromFile);
 
-          //convert to necessary data type
-          int deaths = stoi(s_deaths);
-          int caseCount = stoi(s_cases);
+            while (!file.eof()) {
 
+                //get line from file
+                getline(file, lineFromFile);
 
-          /*=====insert all the data into its key in the list=====*/
+                //take line and put into stream
+                istringstream stream(lineFromFile);
 
-          //all dates should exist bc state data is already loaded
+                //use getline and delimiters to get each element
+                string date, state, fips, s_cases, s_deaths;
 
-          if(findKey(date) != nullptr && findKey(date).findState(state) != -1){
-            findKey(date)->findState(state).addCounty(County(county, caseCount, deaths,  fips));
-          }else{ 
-            std::cout << "key with date not found or state not found in key" << std::end;
-          }
+                getline(stream, date, ',');
+                getline(stream, state, ',');
+                getline(stream, fips, ',');
+                getline(stream, s_cases, ',');
+                getline(stream, s_deaths, ',');
 
+                //convert to necessary data type
+                int deaths = stoi(s_deaths);
+                int caseCount = stoi(s_cases);
+
+                /*=====insert all the data into its key in the list=====*/
+
+                //check if key exists
+                if(findKey(date) != nullptr && state != "Puerto Rico"){
+                    //if it does exist, add state to key in list
+                    findKey(date)->getStates().emplace_back(state,caseCount,deaths,fips);
+                }
+                else{   // if it doesnt, create key and add state and insert into list
+                    if(state != "Puerto Rico") {
+                        keys.emplace_back(new Key(date));
+                        dates.insert(date);
+                        findKey(date)->getStates().emplace_back(state, caseCount, deaths,fips);
+                    }
+                }
+            }
         }
-      }
+        file.close();
     }
-    file.close();
-  }
-}
+
+    void LoadCountyData(const std::string& filepath) {
+        //opens the filepath into file
+        ifstream file(filepath);
+        if (file.is_open()) {
+            //Get line from file and discard
+            string lineFromFile;
+            getline(file, lineFromFile);
+
+            while (!file.eof()) {
+                //get line from file
+                getline(file, lineFromFile);
+
+                //take line and put into stream
+                istringstream stream(lineFromFile);
+                //use getline and delimiters to get each element
+                string date, county, state, fips, s_cases, s_deaths;
+                getline(stream, date, ',');
+                getline(stream, county, ',');
+                getline(stream, state, ',');
+                getline(stream, fips, ',');
+                getline(stream, s_cases, ',');
+                getline(stream, s_deaths, ',');
+                if (state != "Puerto Rico") {
+                    //cout << month << "-" << day << ": " <<county << ", " << state << ", " << fips <<  ", " << s_cases << ", " << s_deaths << ", " << endl;
+
+                    //convert to necessary data type
+                    int deaths = stoi(s_deaths);
+                    int caseCount = stoi(s_cases);
+
+
+                    /*=====insert all the data into its key in the list=====*/
+
+                    //all dates should exist bc state data is already loaded
+
+                    if(findKey(date) != nullptr && findKey(date)->findState(state) != -1){
+                        findKey(date)->getStates()[findKey(date)->findState(state)].addCounty(County(county, caseCount, deaths,  fips));
+                    }else{
+                        std::cout << "key with date not found or state not found in key" << std::endl;
+                    }
+
+                }
+            }
+        }
+        file.close();
+    }
+};
 
 
 #endif //COVIDVISUALIZATION_KEYLIST_H

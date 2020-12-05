@@ -92,10 +92,10 @@ private:
             //swapping left and right pointers appropraitely
             newKey->left = keys[keys.size()-1];
             if(newKey->right == nullptr){
-              newKey->right = keys[keys.size()-1]->right;
-              if(keys[keys.size()-1]->right != nullptr){
-                keys[keys.size()-1]->right->left = newKey;
-              }
+                newKey->right = keys[keys.size()-1]->right;
+                if(keys[keys.size()-1]->right != nullptr){
+                    keys[keys.size()-1]->right->left = newKey;
+                }
             }
             keys[keys.size()-1]->right = newKey;
             //add key into Treenode
@@ -243,7 +243,7 @@ public:
         return root;
     }
 
-    void insertData(std::vector<Key*>& keys){
+    void insertData(std::vector<Key*> keys){
         for(int i = 0;i < keys.size(); i++){
             insertKey(keys.at(i));
         }
@@ -267,7 +267,7 @@ public:
                     for(int i = 0;i < recent->getKeysSize();i++){
                         std::cout << recent->keys[i]->getDate() << " ";
                     }
-                    
+
                     std::cout << recent << " ";
                     if(recent->left != nullptr) {
                         std::cout << recent->left << " ";
@@ -309,9 +309,9 @@ public:
         }
         Key* allKeys = toLeafNode->keys[0];
         while(allKeys != nullptr){
-          //std::this_thread::sleep_for(std::chrono::seconds(1));
-          std::cout << allKeys->getDate() << std::endl;
-          allKeys = allKeys->right;
+            //std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::cout << allKeys->getDate() << std::endl;
+            allKeys = allKeys->right;
         }
     }
 
@@ -326,12 +326,12 @@ public:
             }
             else{
                 if(findLeafNode->getKeysSize() == 2){
-                  if(date >= findLeafNode->keys[1]->getDate()){
-                      findLeafNode = findLeafNode->right;
-                  }
-                  else{
-                    findLeafNode = findLeafNode->middle;
-                  }
+                    if(date >= findLeafNode->keys[1]->getDate()){
+                        findLeafNode = findLeafNode->right;
+                    }
+                    else{
+                        findLeafNode = findLeafNode->middle;
+                    }
                 }
                 else{
                     findLeafNode = findLeafNode->middle;
