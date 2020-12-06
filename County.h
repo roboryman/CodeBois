@@ -11,26 +11,15 @@ private:
     int deaths;
     std::string fips;
 public:
-    County(){
-        this->name = "";
-        this->caseCount = 0;
-        this->deaths = 0;
-    }
-    County(std::string name, int caseCount, int deaths, std::string fips){
-        this->name = std::move(name);
-        this->caseCount = caseCount;
-        this->deaths = deaths;
-        this->fips = std::move(fips);
-    }
-    int getDeaths() const{
-        return deaths;
-    }
-    int getCaseCount() const{
-        return caseCount;
-    }
-    std::string getName(){
-        return name;
-    }
+    County();
+
+    County(std::string name, int caseCount, int deaths, std::string fips);
+
+    int GetDeaths() const;
+
+    int GetCaseCount() const;
+
+    std::string GetName();
 };
 
 

@@ -1,11 +1,9 @@
-#include "BplusTree.h"
-#include "County.h"
-#include "HashTable.h"
-#include "State.h"
-#include "Key.h"
 #include "KeyList.h"
-//#include "GUI.h"
+#include "BplusTree.h"
+#include "HashTable.h"
+#include <chrono>
 
+using namespace std::chrono;
 
 /*
 Project
@@ -19,54 +17,70 @@ Contributers
 
 
 
+
 int main() {
-  /*
-  sf::RenderWindow rw( sf::VideoMode(1200, 900), "COVID-19 Transmission Map", sf::Style::Titlebar | sf::Style::Close);
-  rw.setFramerateLimit(60);
-
-  GUI gui;
-  gui.Redraw(rw, sf::Vector2f(0,0));
-
-  // BEGIN MAIN UPDATE LOOP 
-	while(rw.isOpen()) {
-		sf::Event event;
-    auto mouse = sf::Mouse::getPosition(rw);
-    auto realPos = rw.mapPixelToCoords(mouse);
-		while(rw.pollEvent(event))
-    {
-      gui.HandleEvent(event);
-
-			if(event.type == sf::Event::Closed)
-      {
-				rw.close();
-			}
-		}
-       gui.Redraw(rw, realPos);
-	}
-
-  gui.Cleanup(); */
-
-
-
-
-
-
-
-
 
     //Need to test below with dataset
-    
-    BplusTree* kek2 = new BplusTree();
     KeyList* kekw = new KeyList();
+    BplusTree* kek2 = nullptr;
     HashTable* kek3 = new HashTable();
-    kekw->LoadStateData("us-states.csv");
-    kekw->LoadCountyData("us-counties.csv");
-    kek2->insertData(kekw->getData());
+    kekw->LoadStateData("resources/datasets/us-states.csv");
+    kekw->LoadCountyData("resources/datasets/us-counties.csv");
+    int test = 1;
+    /*
+    while(test >= 1){
+      cin >> test;
+      // start timing
+      auto start = high_resolution_clock::now();
+      if(test == 2){
+        if(kek2 == nullptr){
+          delete kek3;
+          kek3 = nullptr;
+          std::cout << "check BPLUS" << std::endl;
+          kek2 = new BplusTree();
+          kek2->insertData(kekw->getData());
+        }
+        else{
+          delete kek2;
+          kek2 = nullptr;
+          std::cout << "check hash" << std::endl;
+          kek3 = new HashTable();
+          kek3->insertData(kekw->getData());
+        }
+      }
+      // end timing here
+      auto stop = high_resolution_clock::now();
+      auto difference = duration_cast<microseconds>(stop - start);
+      std::cout << difference.count() << std::endl;
+      // update timing labels
+    }
+    */
+    
+
+      kek2->Transverse();
+    //kekw->LoadStateData("resources/datasets/us-states.csv");
+    ////kekw->LoadCountyData("resources/datasets/us-counties.csv");
+    
+    
+    /*
+    auto start = high_resolution_clock::now();
+    //kek2->insertData(kekw->getData());
+    Key* startdate = kek2->findKey("2020-10-08");
+    startdate = startdate->right;
+    auto stop = high_resolution_clock::now();
+    auto difference = duration_cast<microseconds>(stop - start);
+    std::cout << difference.count() << std::endl;
     kek2->LevelOrderTranserse();
+    delete kek2;//made bplustree deconstructor to remove the left and right pointers of key taht it uses
+    
+
+    start = high_resolution_clock::now();
     kek3->insertData(kekw->getData());
-    kek3->PrintTable();
-
-
+    kek3->findKey("2020-10-08");
+    stop = high_resolution_clock::now();
+    difference = duration_cast<microseconds>(stop - start);
+    std::cout << difference.count() << std::endl;
+    */
     
    /*
    BplusTree* treetest = new BplusTree();
