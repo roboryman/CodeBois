@@ -247,7 +247,7 @@ BplusTree::TreeNode* BplusTree::Insert(TreeNode* root,Key* newKey){
     return root;
 }
 
-void BplusTree::InsertData(const std::vector<Key*>& keys){
+void BplusTree::InsertData(std::vector<Key*> keys){
     for(auto & key : keys){
         InsertKey(key);
     }
@@ -314,7 +314,7 @@ void BplusTree::Transverse(){
     Key* allKeys = toLeafNode->keys[0];
     while(allKeys != nullptr){
         //std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::cout << allKeys->GetDate() << std::endl;
+        std::cout << allKeys->GetDate() << " , " << allKeys->GetStates()->size() << std::endl;
         allKeys = allKeys->right;
     }
 }

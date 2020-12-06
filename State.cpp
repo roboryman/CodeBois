@@ -30,7 +30,7 @@ void State::AddCounty(County* newCounty){
     counties.push_back(newCounty);
 }
 
-std::vector<County*> State::GetCounties() {
-return counties;
+std::vector<County*>* State::GetCounties() {
+return &counties;
 }
 

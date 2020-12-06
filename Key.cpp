@@ -20,8 +20,8 @@ std::string Key::GetDate(){
     return date;
 }
 
-std::vector<State*> Key::GetStates() {
-    return states;
+std::vector<State*>* Key::GetStates() {
+    return &states;
 }
 
 int Key::StateIndex(const std::string& stateName){

@@ -24,6 +24,6 @@ public:
 
     void AddCounty(County* newCounty);
 
-    std::vector<County*> GetCounties();
+    std::vector<County*>* GetCounties();
 };
 #endif //COVIDVISUALIZATION_STATE_H

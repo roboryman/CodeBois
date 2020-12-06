@@ -49,7 +49,7 @@ public:
 
     TreeNode* Insert(TreeNode* root,Key* newKey);
 
-    void InsertData(const std::vector<Key*>& keys);
+    void InsertData(std::vector<Key*> keys);
 
     void LevelOrderTranserse();
 

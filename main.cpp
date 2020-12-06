@@ -22,13 +22,17 @@ int main() {
 
     //Need to test below with dataset
     KeyList* kekw = new KeyList();
-    BplusTree* kek2 = nullptr;
+    BplusTree* kek2 = new BplusTree;
     HashTable* kek3 = new HashTable();
     kekw->LoadStateData("resources/datasets/us-states.csv");
-    kekw->LoadCountyData("resources/datasets/us-counties.csv");
+    //kek3->InsertData(kekw->GetData());
+    //kek3->PrintTable();
+    kek2->InsertData(kekw->GetData());
+    kek2->Transverse();
+
     int test = 1;
-    /*
-    while(test >= 1){
+    
+    /*while(test >= 1){
       cin >> test;
       // start timing
       auto start = high_resolution_clock::now();
@@ -38,14 +42,14 @@ int main() {
           kek3 = nullptr;
           std::cout << "check BPLUS" << std::endl;
           kek2 = new BplusTree();
-          kek2->insertData(kekw->getData());
+          kek2->InsertData(kekw->GetData());
         }
         else{
           delete kek2;
           kek2 = nullptr;
           std::cout << "check hash" << std::endl;
           kek3 = new HashTable();
-          kek3->insertData(kekw->getData());
+          kek3->InsertData(kekw->GetData());
         }
       }
       // end timing here
@@ -53,11 +57,10 @@ int main() {
       auto difference = duration_cast<microseconds>(stop - start);
       std::cout << difference.count() << std::endl;
       // update timing labels
-    }
-    */
+    }*/
+    
     
 
-      kek2->Transverse();
     //kekw->LoadStateData("resources/datasets/us-states.csv");
     ////kekw->LoadCountyData("resources/datasets/us-counties.csv");
     

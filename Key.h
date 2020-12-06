@@ -21,7 +21,7 @@ public:
 
     std::string GetDate();
 
-    std::vector<State*> GetStates();
+    std::vector<State*>* GetStates();
 
     int StateIndex(const std::string& stateName);
 

@@ -23,7 +23,7 @@ public:
 
     void PrintDate(const std::string& date);
 
-    void InsertData(const std::vector<Key*>& keys); //add data from datasets
+    void InsertData(std::vector<Key*> keys); //add data from datasets
 
 };
 

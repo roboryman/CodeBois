@@ -64,13 +64,13 @@ void KeyList::LoadStateData(const std::string& filepath) {
             //check if key exists
             if(FindKey(date) != nullptr && state != "Puerto Rico"){
                 //if it does exist, add state to key in list
-                FindKey(date)->GetStates().push_back(new State(state,caseCount,deaths,fips));
+                FindKey(date)->GetStates()->push_back(new State(state,caseCount,deaths,fips));
             }
             else{   // if it doesnt, create key and add state and insert into list
                 if(state != "Puerto Rico") {
                     keys.push_back(new Key(date));
                     dates.insert(date);
-                    FindKey(date)->GetStates().push_back(new State(state,caseCount,deaths,fips));
+                    FindKey(date)->GetStates()->push_back(new State(state,caseCount,deaths,fips));
                 }
             }
         }
@@ -113,8 +113,8 @@ void KeyList::LoadCountyData(const std::string& filepath) {
                 //all dates should exist bc state data is already loaded
 
                 if(FindKey(date) != nullptr && FindKey(date)->FindState(state) != -1){
-                    std::vector<State*> test = FindKey(date)->GetStates();
-                    test.at(FindKey(date)->FindState(state))->AddCounty((new County(date,caseCount,deaths,fips)));
+                    std::vector<State*>* test = FindKey(date)->GetStates();
+                    test->at(FindKey(date)->FindState(state))->AddCounty((new County(date,caseCount,deaths,fips)));
                 }else{
                     std::cout << "key with date not found or state not found in key" << std::endl;
                 }
