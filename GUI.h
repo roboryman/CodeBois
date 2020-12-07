@@ -28,7 +28,7 @@
 #define DEF_STEP_TIME 0.5f
 
 #define DATASET_BEGIN "2020-01-21"
-#define DATASET_END "2020-11-30"
+#define DATASET_END "2020-12-06"
 
 #define DATASET_STATES_FILENAME "resources/datasets/us-states.csv"
 #define DATASET_COUNTIES_FILENAME "resources/datasets/us-counties.csv"
