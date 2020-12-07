@@ -69,7 +69,6 @@ class GUI
     KeyList *keyList;
     HashTable *hashTable;
     BplusTree *bplusTree;
-    BplusTree::TreeNode* currentNode;
     unordered_map<string, pair<int, int>> countyPositions;
 
     /* BEGIN SFML OBJECTS */

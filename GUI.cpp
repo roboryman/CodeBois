@@ -51,7 +51,6 @@ GUI::GUI() {
     keyList = new KeyList();
     hashTable = new HashTable();
     bplusTree = nullptr;
-    currentNode = nullptr;
 
     // Load datasets into KeyList for insertion into data structure later
     keyList->LoadStateData(DATASET_STATES_FILENAME);
@@ -559,11 +558,6 @@ void GUI::DayElapsed() {
 
     currentDate = newYearStr + "-" + newMonthStr + "-" + newDayStr;
     //cout << "New date: " << currentDate << endl;
-    if(bplusTree != nullptr)
-    {
-        currentNode = bplusTree->GetFirstTreeNode();
-    }
-
     GenHeatmap(); // Generate the heatmap for the (new) currentDate
 
     if(newMonthStr==endDate.substr(5, 2) && newDayStr==endDate.substr(8, 2)) {
@@ -621,12 +615,6 @@ void GUI::ApplySettings() {
 void GUI::GotoFirst() {
     StopPlay();
     currentDate = startDate;
-
-    if(bplusTree != nullptr)
-    {
-        currentNode = bplusTree->GetFirstTreeNode();
-    }
-
     UpdateDateLabels();
     GenHeatmap();
 }
@@ -636,12 +624,6 @@ void GUI::GotoFirst() {
 // endDate, update date labels, and generate the heatmap.
 void GUI::GotoLast() {
     currentDate = endDate;
-
-    if(bplusTree != nullptr)
-    {
-        currentNode = bplusTree->GetFirstTreeNode();
-    }
-
     UpdateDateLabels();
     GenHeatmap();
     StopPlay();
@@ -659,14 +641,12 @@ void GUI::ToggleDataStructure() {
         delete hashTable;
         hashTable = nullptr;
         bplusTree = new BplusTree();
-        currentNode = bplusTree->GetFirstTreeNode();
         InsertAndTimeBplusTree();
     }
     else {
         // Switch to using the hash table
         delete bplusTree;
         bplusTree = nullptr;
-        currentNode = nullptr;
         hashTable = new HashTable();
         InsertAndTimeHashTable();
     }
