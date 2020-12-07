@@ -5,15 +5,11 @@
 Key::Key(){
     date = "";
     preStateIndex = 0;
-    left = nullptr;
-    right = nullptr;
 }
 
 Key::Key(std::string date){
     this->date = std::move(date);
     preStateIndex = 0;
-    left = nullptr;
-    right = nullptr;
 }
 
 std::string Key::GetDate(){

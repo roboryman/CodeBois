@@ -11,7 +11,7 @@ class BplusTree{
     //3 children
     //2 keys for non leaf nodes
     //5 keys for leaf nodes
-private:
+public:
     struct TreeNode{
     private:
         bool leaf;
@@ -23,27 +23,31 @@ private:
 
         TreeNode();
 
-        ~TreeNode();
-
         TreeNode(bool isleaf);
 
         int GetKeysSize();
 
+        bool KeyExist(const std::string& date);
+
+        Key* FindKey(const std::string& date);
+
         bool IsLeaf();
+
+        TreeNode* GetNext();
+
+        std::vector<Key*>* GetKeys();
 
         void RemoveFirst();
 
         void AddKey(Key* newKey);
-
-        void InsertKey(Key* newKey);
     };
     //---------------------------------END OF TREENODE STRUCT------------------------------
-    TreeNode* root;
 
-public:
     BplusTree();
 
     ~BplusTree();
+
+    TreeNode* GetFirstTreeNode();
 
     void InsertKey(Key* newKey);
 
@@ -56,6 +60,8 @@ public:
     void Transverse();
 
     Key* FindKey(const std::string& date);
+private:
+    TreeNode* root;
 };
 
 #endif //COVIDVISUALIZATION_BPLUSTREE_H

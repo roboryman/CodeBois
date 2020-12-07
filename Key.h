@@ -12,9 +12,6 @@ private:
     int preStateIndex;
 
 public:
-    Key* left;
-    Key* right;
-
     Key();
 
     Key(std::string date);

@@ -114,7 +114,7 @@ void KeyList::LoadCountyData(const std::string& filepath) {
 
                 if(FindKey(date) != nullptr && FindKey(date)->FindState(state) != -1){
                     std::vector<State*>* test = FindKey(date)->GetStates();
-                    test->at(FindKey(date)->FindState(state))->AddCounty((new County(date,caseCount,deaths,fips)));
+                    test->at(FindKey(date)->FindState(state))->AddCounty((new County(county,caseCount,deaths,fips)));
                 }else{
                     std::cout << "key with date not found or state not found in key" << std::endl;
                 }

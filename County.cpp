@@ -21,3 +21,6 @@ int County::GetCaseCount() const{
 std::string County::GetName(){
     return name;
 }
+std::string County::GetFips(){
+    return fips;
+}

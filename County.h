@@ -20,6 +20,8 @@ public:
     int GetCaseCount() const;
 
     std::string GetName();
+
+    std::string GetFips();
 };
 
 

@@ -2,24 +2,17 @@
 
 BplusTree::TreeNode::TreeNode(){
     leaf = true;
+    left = nullptr;
+    right = nullptr;
 }
 
 BplusTree::TreeNode::TreeNode(bool isleaf){
     leaf = isleaf;
-    //leaf nodes don't need pointers
+    left = nullptr;
+    right = nullptr;
+    //leaf nodes don't need middle pointer
     if(!leaf){
-        left = nullptr;
-        right = nullptr;
         middle = nullptr;
-    }
-}
-
-BplusTree::TreeNode::~TreeNode(){
-    if(leaf) {
-        for (auto & key : keys) {
-            key->left = nullptr;
-            key->right =  nullptr;
-        }
     }
 }
 
@@ -27,8 +20,30 @@ int BplusTree::TreeNode::GetKeysSize(){
     return keys.size();
 }
 
+bool BplusTree::TreeNode::KeyExist(const std::string& date){
+    for(int i = 0; i < GetKeysSize();i++){
+        if(keys.at(i)->GetDate() == date){
+            return true;
+        }
+    }
+    return false;
+}
+
+Key* BplusTree::TreeNode::FindKey(const std::string& date){
+    for(int i = 0; i < GetKeysSize();i++){
+        if(keys.at(i)->GetDate() == date){
+            return keys.at(i);
+        }
+    }
+    return nullptr;
+}
+
 bool BplusTree::TreeNode::IsLeaf(){
     return leaf;
+}
+
+std::vector<Key*>* BplusTree::TreeNode::GetKeys(){
+    return &keys;
 }
 
 void BplusTree::TreeNode::RemoveFirst(){
@@ -52,43 +67,10 @@ void BplusTree::TreeNode::AddKey(Key* newKey){
     keys.push_back(newKey);
 }
 
-void BplusTree::TreeNode::InsertKey(Key* newKey){
-    //insert a key into the leaf linked list
-    //Change pointers and positions
-    if(keys.empty()){
-        keys.push_back(newKey);
-        return;
-    }
-
-    Key* tempKey;
-    for(auto & key : keys){
-        if(newKey->GetDate() < key->GetDate()){
-            //swapping left and right pointers appropriately
-            newKey->right = key;
-            newKey->left = key->left;
-            if(key->left !=nullptr){
-                key->left->right = newKey;
-            }
-            key->left = newKey;
-
-            //swapping keys in vector appropriately
-            tempKey = key;
-            key = newKey;
-            newKey = tempKey;
-        }
-    }
-    //swapping left and right pointers appropriately
-    newKey->left = keys[keys.size()-1];
-    if(newKey->right == nullptr){
-        newKey->right = keys[keys.size()-1]->right;
-        if(keys[keys.size()-1]->right != nullptr){
-            keys[keys.size()-1]->right->left = newKey;
-        }
-    }
-    keys[keys.size()-1]->right = newKey;
-    //add key into Treenode
-    keys.push_back(newKey);
+BplusTree::TreeNode* BplusTree::TreeNode::GetNext() {
+    return right;
 }
+
 //---------------------------------END OF TREENODE STRUCT------------------------------
 
 BplusTree::BplusTree(){
@@ -106,17 +88,28 @@ BplusTree::~BplusTree(){
         }
         if(recent->IsLeaf()){
             delete recent;
-            //recent = NULL;
         }
         else{
             queue.push(recent->left);
             queue.push(recent->middle);
             queue.push(recent->right);
             delete recent;
-            //recent = NULL;
         }
     }
 
+}
+
+BplusTree::TreeNode* BplusTree::GetFirstTreeNode(){
+    if(root == nullptr){
+        return nullptr;
+    }
+    else{
+        TreeNode* toLeafNode = root;
+        while(!toLeafNode->IsLeaf()){
+            toLeafNode = toLeafNode->left;
+        }
+        return toLeafNode;
+    }
 }
 
 void BplusTree::InsertKey(Key* newKey){
@@ -231,17 +224,24 @@ BplusTree::TreeNode* BplusTree::Insert(TreeNode* root,Key* newKey){
         if(root->GetKeysSize() == 5){
             //split needs to occur  leaf node needed
             auto* newLeafNode = new TreeNode(true);
-            root->InsertKey(newKey);
+            root->AddKey(newKey);
             //size is now 6 so we are moving half of the keys to the newLeafNode
             for(int i = 0; i < 3;i++){
                 Key* tempKey = root->keys.back();
                 newLeafNode->AddKey(tempKey);
                 root->keys.pop_back();
             }
+            newLeafNode->right = root->right;
+            newLeafNode->left = root;
+            root->right = newLeafNode;
+            if(newLeafNode->right != nullptr){
+                newLeafNode->right->left = newLeafNode;
+            }
+
             return newLeafNode;
         }
         else{
-            root->InsertKey(newKey);
+            root->AddKey(newKey);
         }
     }
     return root;
@@ -311,11 +311,19 @@ void BplusTree::Transverse(){
     while(!toLeafNode->IsLeaf()){
         toLeafNode = toLeafNode->left;
     }
-    Key* allKeys = toLeafNode->keys[0];
-    while(allKeys != nullptr){
-        //std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::cout << allKeys->GetDate() << " , " << allKeys->GetStates()->size() << std::endl;
-        allKeys = allKeys->right;
+
+    while(toLeafNode != nullptr){
+        for(int j = 0; j < toLeafNode->GetKeysSize();j++) {
+            Key* currentKey = toLeafNode->GetKeys()->at(j);
+            int counties = 0;
+            for (int i = 0; i < currentKey->GetStates()->size(); i++) {
+                counties += currentKey->GetStates()->at(i)->GetCounties()->size();
+            }
+            std::cout << currentKey->GetDate() << std::endl;
+            std::cout << "Amount of States:" << currentKey->GetStates()->size();
+            std::cout << " , Amount of Counties: " << counties << std::endl;
+        }
+        toLeafNode = toLeafNode->GetNext();
     }
 }
 
@@ -342,12 +350,12 @@ Key* BplusTree::FindKey(const std::string& date){
             }
         }
     }
-    Key* findKey = findLeafNode->keys[0];
-    while(findKey != nullptr && date >= findKey->GetDate()){
-        if(date == findKey->GetDate()){
-            return findKey;
+
+    for(int i = 0;i < findLeafNode->GetKeysSize();i++){
+        if (findLeafNode->GetKeys()->at(i)->GetDate() == date){
+            return findLeafNode->GetKeys()->at(i);
         }
-        findKey = findKey->right;
     }
+
     return nullptr;
 }

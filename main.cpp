@@ -1,108 +1,41 @@
-#include "KeyList.h"
-#include "BplusTree.h"
-#include "HashTable.h"
-#include <chrono>
-
-using namespace std::chrono;
+#include "GUI.h"
 
 /*
-Project
-    Visualizing the Spread of COVID-19 in the United States
-Contributers
-    Austin Padilla
-    Frank Olivera
-    Merrick Ryman
+* Project 3 - COP3503
+*    Visualizing the Spread of COVID-19 in the United States
+*
+* Contributers
+*    Austin Padilla
+*    Frank Olivera
+*    Merrick Ryman
 */
 
 
-
-
-
 int main() {
+  sf::RenderWindow rw( sf::VideoMode(1200, 900), "COVID-19 Transmission Map", sf::Style::Titlebar | sf::Style::Close);
+  rw.setFramerateLimit(60);
 
-    //Need to test below with dataset
-    KeyList* kekw = new KeyList();
-    BplusTree* kek2 = new BplusTree;
-    HashTable* kek3 = new HashTable();
-    kekw->LoadStateData("resources/datasets/us-states.csv");
-    //kek3->InsertData(kekw->GetData());
-    //kek3->PrintTable();
-    kek2->InsertData(kekw->GetData());
-    kek2->Transverse();
+  GUI gui;
 
-    int test = 1;
-    
-    /*while(test >= 1){
-      cin >> test;
-      // start timing
-      auto start = high_resolution_clock::now();
-      if(test == 2){
-        if(kek2 == nullptr){
-          delete kek3;
-          kek3 = nullptr;
-          std::cout << "check BPLUS" << std::endl;
-          kek2 = new BplusTree();
-          kek2->InsertData(kekw->GetData());
-        }
-        else{
-          delete kek2;
-          kek2 = nullptr;
-          std::cout << "check hash" << std::endl;
-          kek3 = new HashTable();
-          kek3->InsertData(kekw->GetData());
-        }
-      }
-      // end timing here
-      auto stop = high_resolution_clock::now();
-      auto difference = duration_cast<microseconds>(stop - start);
-      std::cout << difference.count() << std::endl;
-      // update timing labels
-    }*/
-    
-    
+  /* BEGIN MAIN UPDATE LOOP */
+  sf::Clock clock;
+	while(rw.isOpen()) {
+		sf::Event event;
+    sf::Time elapsed = clock.restart();
+    auto mouse = sf::Mouse::getPosition(rw);
+    auto realPos = rw.mapPixelToCoords(mouse);
+		while(rw.pollEvent(event)) {
+      gui.HandleEvent(event);
+			if(event.type == sf::Event::Closed) {
+				rw.close();
+			}
+		}
 
-    //kekw->LoadStateData("resources/datasets/us-states.csv");
-    ////kekw->LoadCountyData("resources/datasets/us-counties.csv");
-    
-    
-    /*
-    auto start = high_resolution_clock::now();
-    //kek2->insertData(kekw->getData());
-    Key* startdate = kek2->findKey("2020-10-08");
-    startdate = startdate->right;
-    auto stop = high_resolution_clock::now();
-    auto difference = duration_cast<microseconds>(stop - start);
-    std::cout << difference.count() << std::endl;
-    kek2->LevelOrderTranserse();
-    delete kek2;//made bplustree deconstructor to remove the left and right pointers of key taht it uses
-    
+    gui.LogicTick(elapsed);
+    gui.Redraw(rw, realPos, elapsed);
+	}
 
-    start = high_resolution_clock::now();
-    kek3->insertData(kekw->getData());
-    kek3->findKey("2020-10-08");
-    stop = high_resolution_clock::now();
-    difference = duration_cast<microseconds>(stop - start);
-    std::cout << difference.count() << std::endl;
-    */
-    
-   /*
-   BplusTree* treetest = new BplusTree();
-    for(int i = 10; i < 100;i++){
-      treetest->insertKey(treetest->makeKey(std::to_string(i)));
-    }
-    treetest->Transverse();
-    treetest->LevelOrderTranserse();
-    Key* testKey = treetest->findKey("-1");
-    if(testKey == nullptr){
-        std::cout << "Not Found" << std::endl;
-    }
-    else{
-        std::cout << "Found" << std::endl;
-        std::cout << testKey->getDate() << std::endl;
-    }
-    */
+  gui.Cleanup();
 
-
-return 0;
-
+	return 0;
 }
