@@ -1,7 +1,7 @@
 #include "GUI.h"
 
 /*
-* Project 3 - COP3503
+* Project 3 - COP3530
 *    Visualizing the Spread of COVID-19 in the United States
 *
 * Contributers
@@ -39,3 +39,7 @@ int main() {
 
 	return 0;
 }
+
+
+//  https://github.com/nytimes/covid-19-data
+//  https://github.com/roboryman/CodeBois/
